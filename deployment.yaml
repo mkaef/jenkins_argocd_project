@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: flask-app-container
-        image: kapelah/jenkins-argocd_app:v1
+        image: kapelah/jenkins-argocd-app:v1
         resources:
           limits:
            memory: "128Mi"
