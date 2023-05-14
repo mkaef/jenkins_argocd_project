@@ -1,7 +1,7 @@
 {
     "jenkins-runner.jobs":{
         "jenkins-argocd_CI":{
-            "isdefault": true,
+            "isDefault": true,
             "runWith": "jenkins-master",
             "name": "jenkins-argocd_CI"
     }
