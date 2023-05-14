@@ -1,0 +1,42 @@
+pipeline{
+
+    agent any
+
+     environment{
+    
+      DOCKERHUB_USERNAME = "kapelah"
+      APP_NAME = "jenkins-argocd_app"
+      IMAGE_TAG = "${BUILD_NUMBER}"
+      IMAGE_NAME = "${DOCKERHUB_USERNAME}" + "/" + "${APP_NAME}"
+      REGISTRY_CREDS = 'dockerhub'
+    }
+
+    stages{
+
+        stage('Clenup workspace'){
+
+            steps{
+                script{
+
+                    cleanWs()
+                }
+            }
+        }
+        stage('Checkout SCM'){
+        
+            steps{
+                script{
+                    git credentialsId: 'github',
+                    url: 'https://github.com/mkaef/jenkins_argocd_project.git',
+                    branch: 'master'
+                }
+            }
+        }
+       
+        
+      
+        
+        
+        
+    }
+}
