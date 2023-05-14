@@ -74,6 +74,21 @@ pipeline{
                 }
             }
         }
+        stage('Push the changed deployment file to Git'){
+            steps{
+                script{
+                    sh """
+                     git config --global user.name "mkaef"
+                     git config --global user.email "eric_franck2@yahoo.fr"
+                     git add deployment.yaml
+                     git commit -m "updated the deployment file"
+                    """
+                    withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
+                    git push "https://github.com/mkaef/jenkins_argocd_project.git" master
+                  }   
+                }
+            }
+        }
          
        
         
