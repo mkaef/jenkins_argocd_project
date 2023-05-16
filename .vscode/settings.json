@@ -8,7 +8,7 @@
    },
     "jenkins-runner.hostConfigs": {
      "jenkins-master": {
-        "url": "http://52.201.240.195:8080",
+        "url": "http://3.83.147.230:8080",
         "user": "lemed",
         "password": "admin",
         "useCrumbIsseur":true,
