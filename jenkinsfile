@@ -62,33 +62,18 @@ pipeline{
                 }
             }
         }
-        stage('Updating kubernetes deployment file'){
+        
+        
+        stage('Trigger config change pipeline'){
             steps{
                 script{
-                
-                    sh """
-                    cat deployment.yaml
-                    sed -i 's/${APP_NAME}.*/${APP_NAME}:${IMAGE_TAG}/g' deployment.yaml
-                    cat deployment.yaml
-                    """
+                    sh "curl -v -k --user lemed: 11a453c00006e311b9568399202cda53c7 -X POST -H 'cache-control: no-cache' -H 'content-type:application/x-www-form-urlencoded' --data  'IMAGE_TAG=${IMAGE_TAG}' 'http://54.157.62.53:8080/job/jenkins-argocd_CD/buildWithParameters?token=jenkins-config' "
+
                 }
             }
         }
-        stage('Push the changed deployment file to Git'){
-            steps{
-                script{
-                    sh """
-                     git config --global user.name "mkaef"
-                     git config --global user.email "eric_franck2@yahoo.fr"
-                     git add deployment.yaml
-                     git commit -m "updated the deployment file"
-                    """
-                    withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
-                    sh "git push https://github.com/mkaef/jenkins_argocd_project.git master"
-                  }   
-                }
-            }
-        }
+        
+        
          
        
         
