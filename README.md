@@ -1,5 +1,4 @@
-
-    CI/CD Project Git-Docker-Jenkins-K8's-ArgoCD using AWS.
+CI/CD ProjectGit-Docker-Jenkins-K8's-ArgoCD using AWS.
 
 In this project, we will deploy a Python application with two method.
 
@@ -7,15 +6,14 @@ First, we will commit code changes to a public github repo,and we will trigger C
 
 Second, we will create a private repo for CD job, connect it to ArgoCD, and trigger CD Jenkins job using Curl command and pass variables from CI pipeline.
 
-    Prerequisites.
+Prerequisites.
 
 1. VSCode (Text Editor), jenkins runner & pipeline-linter-connector configured.
 2. Docker install on your local host.
 3. AWS CLI installed.
 4. A personal AWS account.
 
-
-    Deployment
+Deployment
 
 1. Declarative CI/CD Jenkins job.
 
@@ -42,7 +40,7 @@ Server Setup & Installation
 Create a server in AWS (jenkins-server), OS Ubuntu, instance type t2.medium in my case with 20 GIB enough to download docker and Kubernetes softwares, edit setting to add security group rule with source type anywhere and set port range 8080, lauch instance and connect to the server.
 
 Download  Java
-```
+
 sudo apt-get update
 sudo apt-get install openjdk-11-jdk -y
 
@@ -54,18 +52,18 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
   /etc/apt/sources.list.d/jenkins.list > /dev/null
 
 sudo apt-get update
-````
+
 Install & Unlock Jenkins
-```bash
+
 sudo apt-get install jenkins -y
 sudo systemctl start jenkins.service
 sudo systemctl status jenkins
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 #by default, jenkins runs on port 8080.
 We will create login credentials, manage jenkins plugins, create access tokens for both github and dockerhub, generate jekins API token.
-```
+
 Install Docker
-```
+
 vi dock.sh
 
 #!/bin/bash
@@ -96,9 +94,9 @@ docker info
 #enable minikube
 minikube start
 minikube status
-```
+
 Download Argo CD on your local host and the followig commands on a terminal.
-```
+
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
@@ -111,7 +109,7 @@ kubectl get all -n argocd
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 #Open a new terminal for username & password command.
 argocd admin initial-password -n argocd
-```
+
 Job Excution
 
 Create a declative jenkins pipeline job.
@@ -135,10 +133,10 @@ JenkinsfileCI without CD stages:
 * Push Docker Image
 * Delete Docker Image
 * Trigger config change pipeline with curl command below.
-```
+
 sh "curl -v -k --user name: jekins API Token -X POST -H 'cache-control: no-cache' -H  'content-type:application/x-www-form-urlencoded'  --data  'IMAGE_TAG=${IMAGE_TAG}' 'jenkins url/job/CD job name/buildWithParameters?token=token name' "
 
-```
+
 
 jenkinsfileCD
 
@@ -166,8 +164,7 @@ Third, run the jenkins CI pipeline job, if everything is properly setup, CI job 
 
 
 
-
-    Documentation
+Documentation
 
 https://www.youtube.com/watch?v=kuSdi8bDztk
 
