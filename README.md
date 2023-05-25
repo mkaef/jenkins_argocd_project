@@ -33,17 +33,11 @@ Dockerfile
 Jenkinsfile with the followig stages:
 
 * Cleanup workspace
-
 * Checkout SCM
-
 * Build Docker Image
-
 * Push Docker Image
-
 * Delete Docker Image
-
 * Updatting Kubernetes Deployment files
-
 * Push the changed Deployment file to Git
 
 # Server Setup & Installation
@@ -119,8 +113,11 @@ Set jekins url (localhost:8080) on your settings.json file.
 
 Trigger jenkins job from VSCode using command palette Jenkins Runner: Run Pipeline Script On Default job. We will be adding stages on jenkins file one by one after each successful run to aviod botleneck when error due occur and make it easier to fix issues before moving forward.
 
+![Screenshot-10](https://github.com/mkaef/jenkins_argocd_project/assets/20161437/5d2f46b9-dd23-4429-9b5c-83f8981b9947)
 
 Create Argo CD application which will be checking repo latest update,connect kubernetes nodes to Argo CD and trigger the job from VSCode.
+
+![argocd](https://github.com/mkaef/jenkins_argocd_project/assets/20161437/14aff610-aced-42b5-8894-7efc94b43cbe)
 
 # Declarative Jenkins pipeline CD job
 
@@ -137,6 +134,17 @@ For best practice, we will create a private repo (for CD job) where we will copy
 ```
 sh "curl -v -k --user name: jekins API Token -X POST -H 'cache-control: no-cache' -H  'content-type:application/x-www-form-urlencoded'  --data  'IMAGE_TAG=${IMAGE_TAG}' 'jenkins url/job/CD job name/buildWithParameters?token=token name' "
 ```
+![Screenshot-13](https://github.com/mkaef/jenkins_argocd_project/assets/20161437/3224e28e-82ae-4a0d-a743-bae8f76275aa)
+
+2. JenkinsfileCD:
+
+* Cleanup workspace
+* Checkout SCM
+* Updatting Kubernetes Deployment files
+* Push the changed Deployment file to Git
+
+![Screenshot-14](https://github.com/mkaef/jenkins_argocd_project/assets/20161437/a2a64e1d-536e-40cc-bab0-365ee6409d3c)
+
 # CD Job Excution
 
 First, create a jenkins CI pipeline job where on the pipeline script we will simply copy and past the newly created jenkinsfileCI, then click on Build Now to ensure the job is running properly.
@@ -144,17 +152,6 @@ First, create a jenkins CI pipeline job where on the pipeline script we will sim
 Second, create a a jenkins CI pipeline where we will check: 'this project is parameterized'-> add 'String Parameter', write the paramter name and description, in case "IMAGE_TAG"; check 'Trigger remotely' and write a token name, in my case "jenkins-config" that we will insert on our jenkins CI pipeline "curl command", and we will copy and past jenkinsfileCD on the pipeline script as well.
 
 Third, run the jenkins CI pipeline job, if everything is properly setup, CI job should be trigging CD jankins job using curl command and pass variable. Then we will create an Argo CD application for CD jenkins job, connect kubernetes nodes to Argo CD then trigger the job from CI jenkins pipeline.
-
-
-
-
-
-
-
-
-
-
-
 
 
 ## Documentation
