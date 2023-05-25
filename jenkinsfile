@@ -85,10 +85,8 @@ pipeline{
                      git add deployment.yml
                      git commit -m "updated the deployment file"
                     """
-                    withCredentials(...)
-                    
-                    git push "https//..." master
-                
+                    withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
+                        sh 'git push https://github.com/mkaef/jenkins_argocd_cd.git master'
                 }
             }
         }
